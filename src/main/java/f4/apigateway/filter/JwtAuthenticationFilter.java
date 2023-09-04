@@ -1,13 +1,10 @@
 package f4.apigateway.filter;
 
 
-import f4.apigateway.exception.CustomErrorCode;
-import f4.apigateway.exception.CustomException;
 import f4.apigateway.jwt.JwtTokenProvider;
 import f4.apigateway.redis.RedisService;
 import f4.apigateway.utils.CookieUtil;
 import io.jsonwebtoken.Claims;
-import io.netty.handler.codec.Headers;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,35 +36,25 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
   @Override
   public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
     ServerHttpRequest request = exchange.getRequest();
-    ServerHttpResponse response = exchange.getResponse();
 
     if (routeValidator.isSecured.test(request)) {
       log.info("요청중");
-      Claims claims = null;
-//      try {
-        String accessToken = jwtTokenProvider.resolveToken(request);
-        claims = jwtTokenProvider.extractAllClaims(accessToken);
-        request = addAuthorizationHeaders(request, claims);
-//      } catch (CustomException e) {
-//        log.info("access-token이 만료되어 refresh-token을 활용하여 access-token을 새로 발급받는다.");
-//        String refreshToken = cookieUtil.getCookie(request, "refresh-token");
-//
-//        if (!refreshToken.isBlank()) {
-//          return chain.filter(exchange.mutate().request(request).build());
-//        }
-
-//        throw new CustomException(CustomErrorCode.MISSING_REFRESH_TOKEN);
+      String accessToken = jwtTokenProvider.resolveToken(request);
+      Claims claims = jwtTokenProvider.extractAllClaims(accessToken);
+      addAuthorizationHeaders(request, claims);
     }
 
     HttpHeaders headers = request.getHeaders();
     log.info("해당 서비스를 실행합니다. path : {}", request.getURI());
     log.info("request-header userId : {}", headers.getFirst("userId"));
-    return chain.filter(exchange.mutate().request(request).build());
+    return chain.filter(exchange);
   }
 
-  private ServerHttpRequest addAuthorizationHeaders(ServerHttpRequest request, Claims claims) {
-    return request.mutate()
-        .header("userId", String.valueOf(claims.get("user_id")))
+  private void addAuthorizationHeaders(ServerHttpRequest request, Claims claims) {
+    log.info("claims userId : {}, role : {}", claims.get("userId"), claims.get("role"));
+
+    request.mutate()
+        .header("userId", String.valueOf(claims.get("userId")))
         .header("role", (String) claims.get("role"))
         .build();
   }

@@ -14,7 +14,9 @@ public enum OpenApiEndpoints {
   EUREKA("/eureka", "Eureka 서비스"),
   EMAIL_SEND("/email/v1/send", "이메일 인증 코드 발송 API"),
   HEALTH("/health", "서버 헬스 체크 API"),
-  EMAIL_CERTIFICATION("/auth/v1/email/certification", "이메일 인증 API");
+  EMAIL_CERTIFICATION("/auth/v1/email/certification", "이메일 인증 API"),
+  REISSUE("/auth/v1/token/reissue", "토큰 재발행");
+
 
   private final String path;
   private final String description;

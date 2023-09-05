@@ -1,21 +1,19 @@
 package f4.apigateway.filter;
 
 
+import f4.apigateway.exception.CustomErrorCode;
+import f4.apigateway.exception.CustomException;
 import f4.apigateway.jwt.JwtTokenProvider;
 import f4.apigateway.redis.RedisService;
-import f4.apigateway.utils.CookieUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -25,13 +23,8 @@ import reactor.core.publisher.Mono;
 public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
 
   private final JwtTokenProvider jwtTokenProvider;
-  private final RedisService redisService;
-  private final CookieUtil cookieUtil;
   private final RouteValidator routeValidator;
-  private final RestTemplate restTemplate;
-
-  @Value("${jwt.token.prefix}")
-  private String prefix;
+  private final RedisService redisService;
 
   @Override
   public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -40,19 +33,22 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
     if (routeValidator.isSecured.test(request)) {
       log.info("요청중");
       String accessToken = jwtTokenProvider.resolveToken(request);
+
+      // 레디스 블랙리스트에 해당 토큰이 있는지 여부  파악
+      if(redisService.hasBlackList(accessToken)){
+        throw new CustomException(CustomErrorCode.INVALID_ACCESS_TOKEN);
+      }
+
       Claims claims = jwtTokenProvider.extractAllClaims(accessToken);
       addAuthorizationHeaders(request, claims);
     }
 
     HttpHeaders headers = request.getHeaders();
     log.info("해당 서비스를 실행합니다. path : {}", request.getURI());
-    log.info("request-header userId : {}", headers.getFirst("userId"));
     return chain.filter(exchange);
   }
 
   private void addAuthorizationHeaders(ServerHttpRequest request, Claims claims) {
-    log.info("claims userId : {}, role : {}", claims.get("userId"), claims.get("role"));
-
     request.mutate()
         .header("userId", String.valueOf(claims.get("userId")))
         .header("role", (String) claims.get("role"))

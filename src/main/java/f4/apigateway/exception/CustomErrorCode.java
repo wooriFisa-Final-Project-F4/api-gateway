@@ -21,6 +21,8 @@ public enum CustomErrorCode {
 
     // Not Found 404
 
+    // Server Error
+    HAS_SERVER_ERROR(500, "서버 에러가 발생했습니다."),
     ;
     private final int code;
     private final String message;

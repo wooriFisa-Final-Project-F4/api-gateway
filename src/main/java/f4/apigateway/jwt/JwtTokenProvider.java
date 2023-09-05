@@ -48,9 +48,9 @@ public class JwtTokenProvider {
           .parseClaimsJws(token)
           .getBody();
     } catch (ExpiredJwtException e) {
-      throw new ExpiredTokenException(CustomErrorCode.EXPIRED_ACCESS_TOKEN);
+      throw new CustomException(CustomErrorCode.EXPIRED_ACCESS_TOKEN);
     } catch (InvalidTokenException e) {
-      throw new InvalidTokenException(CustomErrorCode.INVALID_ACCESS_TOKEN);
+      throw new CustomException(CustomErrorCode.INVALID_ACCESS_TOKEN);
     }
   }
 

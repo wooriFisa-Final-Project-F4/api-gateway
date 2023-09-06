@@ -37,7 +37,7 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
           ((CustomException) ex).getCustomErrorCode().getCode(),
           ((CustomException) ex).getCustomErrorCode().getMessage());
     } else {
-      errorDetails = ErrorDetails.builder().code(404).message("Not Defined Error").build();
+      errorDetails = ErrorDetails.builder().code(404).message(ex.getMessage()).build();
     }
 
     return exchange.getResponse().writeWith(

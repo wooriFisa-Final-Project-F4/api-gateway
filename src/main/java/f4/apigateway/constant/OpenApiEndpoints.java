@@ -9,10 +9,10 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum OpenApiEndpoints {
-  REGISTER("/auth/v1/register", "회원가입 API"),
+  REGISTER("/auth/v1/signup", "회원가입 API"),
   LOGIN("/auth/v1/login", "로그인 API"),
   EUREKA("/eureka", "Eureka 서비스"),
-  EMAIL_SEND("/email/v1/send", "이메일 인증 코드 발송 API"),
+  EMAIL_SEND("/email/v1/code", "이메일 인증 코드 발송 API"),
   HEALTH("/health", "서버 헬스 체크 API"),
   EMAIL_CERTIFICATION("/auth/v1/email/certification", "이메일 인증 API"),
   REISSUE("/auth/v1/token/reissue", "토큰 재발행");

@@ -17,7 +17,8 @@ public enum OpenApiEndpoints {
   HEALTH("/system", "Actuator 정보"),
   EMAIL_CERTIFICATION("/auth/v1/email/certification", "이메일 인증 API"),
   REISSUE("/auth/v1/token/reissue", "토큰 재발행"),
-  HEALTH_SCHEDULER("/scheduler/","스케줄러 테스트 컨트롤러");
+  HEALTH_SCHEDULER("/scheduler/","스케줄러 테스트 컨트롤러"),
+  PRODUCT_SELECT("/product/v1/select", "Product 조회");
 
   private final String path;
   private final String description;

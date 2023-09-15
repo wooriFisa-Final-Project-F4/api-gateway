@@ -1,31 +1,27 @@
 # api-gateway
+> Spring Cloud Gateway를 이용한 프로젝트입니다. 
+<br>
 
-## Overview
+## 목차
+- [Dependency](#-dependency) <br>
+- [api-gateway 흐름](#api-gateway-흐름) <br>
+<br> 
 
-Spring Cloud Gateway를 이용한 프로젝트입니다. 이 프로젝트는 다음과 같은 주요 기능 및 라이브러리를 활용하고 있습니다
+## 🛠️ Dependency
+|       기능       | 기술 스택                                                                       |
+|:--------------:|:----------------------------------------------------------------------------|
+|  Spring Boot   | - Spring Framework 2.7.15<br> - Java 17 <br> - Gradle 8.0 <br> - Spring Web <br> - WebFlux |
+|  Spring Cloud  | - Eureka <br> - Config <br> - Gateway <br>                                  |
+|    Database    | - Redis Client                                                              |
+| Authentication | - JWT                                                                       |
+|   Monitoring   | - Actuator <br> - Spring Cloud Sleuth                                       |
 
-- Spring Cloud Gateway
-- Spring Boot Actuator
-- Eureka Client for service discovery
-- Spring Cloud Config for centralized configuration
-- Reactive Redis data access
-- JWT for security
+<br>
 
-## Requirements
+<br>
 
-- Java 17
-- Spring Cloud Gateway
-- Spring WebFlux
-
-## Stack
-
-<p align="left">
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg" alt="redis" width="40" height="40"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" alt="spring" width="40" height="40"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" alt="java" width="40" height="40"/>
-</p>
-
-## Mechanism
+## 🚀 api-gateway 흐름 
+<br>
 
 <img width="382" alt="api-gateway" src="https://github.com/wooriFisa-Final-Project-F4/.github/assets/109801772/404bf0f9-77e4-42c1-812a-2cef26c32970">
 

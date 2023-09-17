@@ -20,7 +20,7 @@
 
 <br>
 
-## 🚀 api-gateway 흐름 
+## 🔄 api-gateway 흐름 
 <br>
 
 <img width="382" alt="api-gateway" src="https://github.com/wooriFisa-Final-Project-F4/.github/assets/109801772/404bf0f9-77e4-42c1-812a-2cef26c32970">
